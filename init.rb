@@ -3,10 +3,10 @@ require 'redmine'
 
 Redmine::Plugin.register :redmine_embedded_video do
  name 'Redmine Embedded Video'
- author 'Nikolay Kotlyarov, PhobosK, Jan Pilz'
- description 'Embeds attachment videos, video URLs or Youtube videos. Usage (as macro): video(ID|URL|YOUTUBE_URL). Updated to JW Player 6.2.3115, SWFObject removed'
+ author 'Nikolay Kotlyarov, PhobosK, Jan Pilz, 42pub'
+ description 'Embeds attachment videos, video URLs or Youtube videos. Usage (as macro): video(ID|URL|YOUTUBE_URL). videojs'
  url 'http://www.redmine.org/issues/5171'
- version '0.0.3.1'
+ version '0.0.4.1'
 end
 
 Redmine::WikiFormatting::Macros.register do
@@ -27,15 +27,11 @@ Redmine::WikiFormatting::Macros.register do
             file_url = args[0].gsub(/<.*?>/, '').gsub(/&lt;.*&gt;/,'')
         end
 out = <<END
-<script type="text/javascript" src="#{request.protocol}#{request.host_with_port}#{ActionController::Base.relative_url_root}/plugin_assets/redmine_embedded_video/jwplayer.js"></script>
-<div id="video_#{@num}">Loading the player ...</div>
-<script type="text/javascript">
-    jwplayer("video_#{@num}").setup({
-        file: "#{file_url}",
-        height: #{@height},
-        width: #{@width} 
-    });
-</script>
+<link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" />
+<script src="https://vjs.zencdn.net/7.17.0/video.min.js"></script>
+<video controls preload="auto" id="video_#{@num}" class="video-js" width="#{@width}" height="#{@height}">
+    <source src="#{file_url}" type="video/mp4" />
+</video>
 END
 
     out.html_safe
