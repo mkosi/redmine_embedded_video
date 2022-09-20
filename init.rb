@@ -20,6 +20,7 @@ Redmine::WikiFormatting::Macros.register do
         @num ||= 0
         @num = @num + 1
         attachment = o.attachments.find_by_filename(args[0]) if o.respond_to?('attachments')
+        data_setup = ""
 
         if attachment
             file_url = url_for(:only_path => false, :controller => 'attachments', :action => 'download', :id => attachment, :filename => attachment.filename)
@@ -27,8 +28,8 @@ Redmine::WikiFormatting::Macros.register do
             file_url = args[0].gsub(/<.*?>/, '').gsub(/&lt;.*&gt;/,'')
         end
 out = <<END
-<link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" />
-<script src="https://vjs.zencdn.net/7.17.0/video.min.js"></script>
+<link href="#{request.protocol}#{request.host_with_port}#{ActionController::Base.relative_url_root}/plugin_assets/redmine_embedded_video/video-js.min.css" rel="stylesheet" />
+<script src="#{request.protocol}#{request.host_with_port}#{ActionController::Base.relative_url_root}/plugin_assets/redmine_embedded_video/video.min.js"></script>
 <video controls preload="auto" id="video_#{@num}" class="video-js" width="#{@width}" height="#{@height}">
     <source src="#{file_url}" type="video/mp4" />
 </video>

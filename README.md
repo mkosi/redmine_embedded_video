@@ -3,7 +3,7 @@ redmine_embedded_video
 
 Author: Jan Pilz  (see http://www.redmine.org/issues/5171)
 
-Tested redmine 4.2.1
+Tested redmine 4.2.1, 5.0.2
 
 - git clone into redmine to plugins directory
 - rake redmine:plugins:migrate RAILS_ENV=production
